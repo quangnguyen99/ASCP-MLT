@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASCP MLT BOC Exam Practice</title>
+<style>
+  :root {
+    --bg: #f8f7f4;
+    --surface: #ffffff;
+    --border: rgba(0,0,0,0.12);
+    --border-strong: rgba(0,0,0,0.25);
+    --text: #1a1a1a;
+    --text-muted: #5a5a5a;
+    --text-faint: #888;
+    --blue-bg: #e6f1fb;
+    --blue-text: #0c447c;
+    --blue-border: #185fa5;
+    --green-bg: #eaf3de;
+    --green-text: #27500a;
+    --green-border: #3b6d11;
+    --red-bg: #fcebeb;
+    --red-text: #791f1f;
+    --red-border: #a32d2d;
+    --amber-bg: #faeeda;
+    --amber-text: #633806;
+    --amber-border: #854f0b;
+    --purple-bg: #eeedfe;
+    --purple-text: #3c3489;
+    --purple-border: #534ab7;
+    --teal-bg: #e1f5ee;
+    --teal-text: #085041;
+    --teal-border: #0f6e56;
+    --coral-bg: #faece7;
+    --coral-text: #4a1b0c;
+    --coral-border: #993c1d;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1a18;
+      --surface: #242422;
+      --border: rgba(255,255,255,0.1);
+      --border-strong: rgba(255,255,255,0.22);
+      --text: #e8e8e4;
+      --text-muted: #a0a09a;
+      --text-faint: #666;
+      --blue-bg: #0c447c;
+      --blue-text: #b5d4f4;
+      --blue-border: #378add;
+      --green-bg: #27500a;
+      --green-text: #c0dd97;
+      --green-border: #639922;
+      --red-bg: #791f1f;
+      --red-text: #f7c1c1;
+      --red-border: #e24b4a;
+      --amber-bg: #633806;
+      --amber-text: #fac775;
+      --amber-border: #ba7517;
+      --purple-bg: #3c3489;
+      --purple-text: #cecbf6;
+      --purple-border: #7f77dd;
+      --teal-bg: #085041;
+      --teal-text: #9fe1cb;
+      --teal-border: #1d9e75;
+      --coral-bg: #4a1b0c;
+      --coral-text: #f5c4b3;
+      --coral-border: #d85a30;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 16px; line-height: 1.6; }
+  .app { max-width: 780px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+  h1 { font-size: 22px; font-weight: 600; margin-bottom: 0.25rem; }
+  h2 { font-size: 18px; font-weight: 500; margin-bottom: 1rem; }
+  h3 { font-size: 16px; font-weight: 500; }
+  .subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 2rem; }
+  .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+  .badge { display: inline-block; font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 6px; }
+  .badge-blue { background: var(--blue-bg); color: var(--blue-text); }
+  .badge-green { background: var(--green-bg); color: var(--green-text); }
+  .badge-red { background: var(--red-bg); color: var(--red-text); }
+  .badge-amber { background: var(--amber-bg); color: var(--amber-text); }
+  .badge-purple { background: var(--purple-bg); color: var(--purple-text); }
+  .badge-teal { background: var(--teal-bg); color: var(--teal-text); }
+  .badge-coral { background: var(--coral-bg); color: var(--coral-text); }
+
+  /* Setup screen */
+  .setup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
+  @media (max-width: 500px) { .setup-grid { grid-template-columns: 1fr; } }
+  .mode-btn, .domain-btn { background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; padding: 1rem; cursor: pointer; text-align: left; transition: border-color 0.15s; color: var(--text); }
+  .mode-btn:hover, .domain-btn:hover { border-color: var(--border-strong); }
+  .mode-btn.selected, .domain-btn.selected { border: 2px solid var(--blue-border); background: var(--blue-bg); }
+  .mode-btn .name, .domain-btn .name { font-size: 14px; font-weight: 500; margin-bottom: 2px; }
+  .mode-btn .desc, .domain-btn .desc { font-size: 12px; color: var(--text-muted); }
+  .mode-btn.selected .desc, .domain-btn.selected .desc { color: var(--blue-text); }
+  .domain-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; margin-bottom: 1.5rem; }
+  .start-btn { display: block; width: 100%; padding: 0.875rem; background: var(--blue-border); color: #fff; border: none; border-radius: 10px; font-size: 16px; font-weight: 500; cursor: pointer; transition: opacity 0.15s; }
+  .start-btn:hover { opacity: 0.9; }
+  .start-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  label.section-label { display: block; font-size: 13px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+
+  /* Quiz screen */
+  .progress-bar-wrap { background: var(--border); border-radius: 4px; height: 4px; margin-bottom: 1.5rem; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--blue-border); border-radius: 4px; transition: width 0.3s; }
+  .progress-text { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); margin-bottom: 0.5rem; }
+  .question-stem { font-size: 16px; line-height: 1.7; margin-bottom: 1.5rem; }
+  .option-btn { display: block; width: 100%; text-align: left; background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; padding: 0.875rem 1rem; margin-bottom: 0.625rem; cursor: pointer; font-size: 15px; color: var(--text); transition: border-color 0.12s, background 0.12s; }
+  .option-btn:hover:not(:disabled) { border-color: var(--border-strong); background: var(--bg); }
+  .option-btn:disabled { cursor: default; }
+  .option-btn.correct { border: 2px solid var(--green-border); background: var(--green-bg); color: var(--green-text); }
+  .option-btn.wrong { border: 2px solid var(--red-border); background: var(--red-bg); color: var(--red-text); }
+  .option-btn.reveal-correct { border: 2px solid var(--green-border); background: var(--green-bg); color: var(--green-text); }
+  .option-letter { font-weight: 600; margin-right: 0.5rem; }
+  .feedback { border-radius: 10px; padding: 1rem 1.25rem; margin-top: 1rem; font-size: 14px; line-height: 1.7; }
+  .feedback.correct-fb { background: var(--green-bg); color: var(--green-text); border: 0.5px solid var(--green-border); }
+  .feedback.wrong-fb { background: var(--red-bg); color: var(--red-text); border: 0.5px solid var(--red-border); }
+  .feedback-header { font-weight: 600; font-size: 15px; margin-bottom: 0.5rem; }
+  .next-btn { display: block; width: 100%; padding: 0.875rem; margin-top: 1rem; background: var(--surface); border: 0.5px solid var(--border-strong); border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer; color: var(--text); transition: background 0.12s; }
+  .next-btn:hover { background: var(--bg); }
+  .score-chip { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; }
+
+  /* Summary screen */
+  .summary-score { font-size: 48px; font-weight: 600; text-align: center; margin: 0.5rem 0; }
+  .summary-label { text-align: center; color: var(--text-muted); font-size: 14px; margin-bottom: 2rem; }
+  .domain-row { display: flex; align-items: center; gap: 12px; margin-bottom: 0.75rem; font-size: 14px; }
+  .domain-row-name { min-width: 200px; color: var(--text-muted); }
+  .domain-row-bar-wrap { flex: 1; background: var(--border); border-radius: 4px; height: 8px; overflow: hidden; }
+  .domain-row-bar { height: 100%; border-radius: 4px; }
+  .domain-row-pct { min-width: 40px; text-align: right; font-weight: 500; }
+  .replay-btn { display: block; width: 100%; padding: 0.875rem; margin-top: 1.5rem; background: var(--blue-border); color: #fff; border: none; border-radius: 10px; font-size: 16px; font-weight: 500; cursor: pointer; }
+  .replay-btn:hover { opacity: 0.9; }
+  .verdict { display: inline-block; padding: 6px 16px; border-radius: 8px; font-weight: 500; font-size: 15px; }
+  .verdict.pass { background: var(--green-bg); color: var(--green-text); }
+  .verdict.fail { background: var(--red-bg); color: var(--red-text); }
+  .verdict.neutral { background: var(--amber-bg); color: var(--amber-text); }
+  .hidden { display: none !important; }
+  hr { border: none; border-top: 0.5px solid var(--border); margin: 1.5rem 0; }
+  .miss-list { margin-top: 0.5rem; }
+  .miss-item { font-size: 13px; color: var(--text-muted); margin-bottom: 0.25rem; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:0.25rem;">
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#185fa5"/><path d="M8 10h16M8 16h10M8 22h13" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="25" cy="22" r="4" fill="#1d9e75"/><path d="M23 22l1.5 1.5L27 20" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div>
+      <h1>ASCP MLT BOC Practice</h1>
+      <p class="subtitle" style="margin:0">Medical Laboratory Technician exam simulator</p>
+    </div>
+  </div>
+
+  <!-- PERSONAL NOTE -->
+  <div style="background:var(--blue-bg);border:0.5px solid var(--blue-border);border-radius:12px;padding:1rem 1.25rem;margin-top:1.25rem;display:flex;align-items:center;gap:12px;">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;"><path d="M12 21s-7.5-4.6-9.7-9.2C1.1 8.9 2.5 6 5.4 6c1.9 0 3.2 1.1 4.1 2.4C10.4 7.1 11.7 6 13.6 6c2.9 0 4.3 2.9 3.1 5.8C16.5 14.6 12 21 12 21z" fill="#e24b4a" stroke="#a32d2d" stroke-width="1.2" stroke-linejoin="round"/></svg>
+    <p style="margin:0;font-size:15px;line-height:1.6;color:var(--blue-text);font-style:italic;">
+      I hope this will help, and wish you the best on your exam baby &lt;3 — Quang Nguyen
+    </p>
+  </div>
+
+  <!-- SETUP SCREEN -->
+  <div id="setup-screen">
+    <hr>
+
+    <label class="section-label">Mode</label>
+    <div class="setup-grid" id="mode-grid">
+      <button class="mode-btn selected" data-mode="quick" onclick="selectMode(this)">
+        <div class="name">Quick Quiz</div>
+        <div class="desc">10 questions — warm-up or topic review</div>
+      </button>
+      <button class="mode-btn" data-mode="drill" onclick="selectMode(this)">
+        <div class="name">Domain Drill</div>
+        <div class="desc">20 questions — focused on one domain</div>
+      </button>
+      <button class="mode-btn" data-mode="mini" onclick="selectMode(this)">
+        <div class="name">Mini Mock</div>
+        <div class="desc">30 questions — proportionally weighted</div>
+      </button>
+      <button class="mode-btn" data-mode="full" onclick="selectMode(this)">
+        <div class="name">Full Mock Exam</div>
+        <div class="desc">100 questions — timed 2h 30m simulation</div>
+      </button>
+    </div>
+
+    <div id="domain-section">
+      <label class="section-label">Domain <span style="font-weight:400;text-transform:none;letter-spacing:0">(for Quick Quiz & Domain Drill)</span></label>
+      <div class="domain-grid" id="domain-grid">
+        <button class="domain-btn selected" data-domain="all" onclick="selectDomain(this)">
+          <div class="name">All Domains</div>
+          <div class="desc">Mixed</div>
+        </button>
+        <button class="domain-btn" data-domain="blood_banking" onclick="selectDomain(this)">
+          <div class="name">Blood Banking</div>
+          <div class="desc">15–20%</div>
+        </button>
+        <button class="domain-btn" data-domain="chemistry" onclick="selectDomain(this)">
+          <div class="name">Chemistry</div>
+          <div class="desc">20–25%</div>
+        </button>
+        <button class="domain-btn" data-domain="hematology" onclick="selectDomain(this)">
+          <div class="name">Hematology</div>
+          <div class="desc">20–25%</div>
+        </button>
+        <button class="domain-btn" data-domain="microbiology" onclick="selectDomain(this)">
+          <div class="name">Microbiology</div>
+          <div class="desc">15–20%</div>
+        </button>
+        <button class="domain-btn" data-domain="immunology" onclick="selectDomain(this)">
+          <div class="name">Immunology</div>
+          <div class="desc">5–10%</div>
+        </button>
+        <button class="domain-btn" data-domain="urinalysis" onclick="selectDomain(this)">
+          <div class="name">Urinalysis</div>
+          <div class="desc">5–10%</div>
+        </button>
+        <button class="domain-btn" data-domain="lab_ops" onclick="selectDomain(this)">
+          <div class="name">Lab Operations</div>
+          <div class="desc">5–10%</div>
+        </button>
+      </div>
+    </div>
+
+    <button class="start-btn" onclick="startQuiz()">Start Quiz</button>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="hidden">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+      <span id="quiz-domain-badge" class="badge badge-blue"></span>
+      <span id="quiz-score-chip" class="score-chip"><span id="quiz-correct">0</span> / <span id="quiz-answered">0</span> correct</span>
+    </div>
+    <div class="progress-text">
+      <span id="quiz-progress-label">Question 1 of 10</span>
+      <span id="quiz-timer" class="hidden"></span>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-bar" style="width:0%"></div></div>
+
+    <div class="card">
+      <p class="question-stem" id="question-stem"></p>
+      <div id="options-list"></div>
+      <div id="feedback-box" class="hidden"></div>
+      <button class="next-btn hidden" id="next-btn" onclick="nextQuestion()">Next question →</button>
+    </div>
+  </div>
+
+  <!-- SUMMARY SCREEN -->
+  <div id="summary-screen" class="hidden">
+    <div class="card" style="text-align:center;padding:2rem;">
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:0.25rem;">Final Score</p>
+      <div class="summary-score" id="summary-score-num">—</div>
+      <div class="summary-label" id="summary-score-label"></div>
+      <div id="summary-verdict"></div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom:1rem;">Performance by domain</h3>
+      <div id="domain-breakdown"></div>
+    </div>
+
+    <div class="card" id="weak-card" style="display:none;">
+      <h3 style="margin-bottom:0.5rem;">Suggested next step</h3>
+      <p id="weak-suggestion" style="font-size:14px;color:var(--text-muted);"></p>
+    </div>
+
+    <button class="replay-btn" onclick="goHome()">Start another session</button>
+  </div>
+
+</div>
+
+<script>
+const DOMAIN_COLORS = {
+  blood_banking: 'coral',
+  chemistry: 'blue',
+  hematology: 'red',
+  microbiology: 'green',
+  immunology: 'purple',
+  urinalysis: 'teal',
+  lab_ops: 'amber'
+};
+const DOMAIN_NAMES = {
+  blood_banking: 'Blood Banking',
+  chemistry: 'Chemistry',
+  hematology: 'Hematology & Hemostasis',
+  microbiology: 'Microbiology',
+  immunology: 'Immunology / Serology',
+  urinalysis: 'Urinalysis & Body Fluids',
+  lab_ops: 'Laboratory Operations'
+};
+const DOMAIN_WEIGHTS = {
+  blood_banking: 0.175, chemistry: 0.225, hematology: 0.225,
+  microbiology: 0.175, immunology: 0.075, urinalysis: 0.075, lab_ops: 0.075
+};
+
+const QUESTIONS = [
+  // BLOOD BANKING
+  {
+    domain: 'blood_banking',
+    stem: 'A group O patient\'s antibody screen is positive in all three screening cells and the autocontrol is negative. The reactions are strongest at the antiglobulin phase and are enhanced by enzyme treatment. Which antibody is most consistent with this pattern?',
+    options: ['Anti-Fya', 'Anti-K', 'Anti-E', 'Anti-M'],
+    answer: 2,
+    explanation: 'Anti-E reacts at the antiglobulin phase (AHG) and is characteristically enhanced by enzyme (ficin/papain) treatment. Anti-Fya (A) is destroyed by enzymes — enzyme enhancement rules it out. Anti-M (D) is usually IgM, reacts at room temperature, and is enzyme-sensitive. Anti-K (B) reacts at AHG but is not significantly enhanced by enzymes, so enhancement favors Anti-E.'
+  },
+  {
+    domain: 'blood_banking',
+    stem: 'A patient types as group A on forward typing, but the reverse type shows a reaction with both A1 and B reagent cells. The most likely explanation is:',
+    options: ['The patient has anti-A,B antibody', 'The patient is a weak subgroup of A with naturally occurring anti-A1', 'The patient received a recent group O transfusion', 'The patient has a cold autoantibody'],
+    answer: 1,
+    explanation: 'A subgroup such as A2 can produce a naturally occurring anti-A1 antibody, causing a reaction with A1 cells in reverse typing. This creates a forward/reverse discrepancy. The forward type showing A is still correct for the ABO group — the patient is A2 with anti-A1. Options A and C would not explain an A2 discrepancy, and option D would react with the patient\'s own cells (positive autocontrol), which is not described.'
+  },
+  {
+    domain: 'blood_banking',
+    stem: 'A 28-year-old Rh-negative woman delivers an Rh-positive baby. The rosette test is positive. The next step is:',
+    options: ['Administer one dose of Rh immune globulin (300 µg)', 'Perform a Kleihauer-Betke or flow cytometry test to quantify fetal cells', 'No further action needed since the rosette test is sufficient', 'Administer two doses of Rh immune globulin prophylactically'],
+    answer: 1,
+    explanation: 'A positive rosette test indicates fetomaternal hemorrhage (FMH) greater than 15 mL fetal RBCs. The next step is quantification (Kleihauer-Betke acid elution or flow cytometry) to determine exactly how many vials of RhIG are needed. One standard 300 µg vial covers approximately 15 mL fetal RBCs (or 30 mL whole blood). Without knowing the volume of FMH, you cannot determine the correct dose.'
+  },
+  {
+    domain: 'blood_banking',
+    stem: 'A unit of packed red blood cells must be stored at:',
+    options: ['−18°C or colder', '1–6°C', '20–24°C', '−65°C or colder'],
+    answer: 1,
+    explanation: 'Packed red blood cells (pRBCs) must be stored at 1–6°C with continuous gentle agitation not required. Storage at this temperature extends shelf life to 42 days with additive solutions such as AS-1, AS-3, or AS-5. Platelets are stored at 20–24°C (C); FFP and cryoprecipitate at −18°C or colder (A); some rare-antigen or autologous units may be frozen at −65°C (D) in glycerol.'
+  },
+  {
+    domain: 'blood_banking',
+    stem: 'A patient receiving a red blood cell transfusion develops fever (temperature rise >1°C), chills, and rigors 45 minutes into the transfusion. No hemolysis is noted on post-transfusion sample. The most likely transfusion reaction is:',
+    options: ['Acute hemolytic transfusion reaction', 'Febrile non-hemolytic transfusion reaction (FNHTR)', 'Transfusion-related acute lung injury (TRALI)', 'Anaphylactic reaction'],
+    answer: 1,
+    explanation: 'Febrile non-hemolytic transfusion reactions are the most common reactions and are caused by cytokines from donor leukocytes or by recipient antibodies against donor HLA antigens. They present with fever and chills without hemolysis. AHTR (A) would show hemolysis (red plasma/urine, falling hgb). TRALI (C) presents with acute respiratory distress and new bilateral pulmonary infiltrates. Anaphylactic reactions (D) present with urticaria, bronchospasm, and hypotension.'
+  },
+  {
+    domain: 'blood_banking',
+    stem: 'Which blood component is the preferred source of fibrinogen for a patient with hypofibrinogenemia (fibrinogen <80 mg/dL)?',
+    options: ['Fresh frozen plasma (FFP)', 'Cryoprecipitate', 'Platelet concentrate', 'Packed red blood cells'],
+    answer: 1,
+    explanation: 'Cryoprecipitate is the concentrated source of fibrinogen, prepared from FFP by controlled thawing. Each unit contains approximately 150–250 mg fibrinogen, 80–120 IU factor VIII, vWF, factor XIII, and fibronectin. FFP (A) contains all clotting factors but at much lower concentrations — you would need very large volumes to treat isolated fibrinogen deficiency. Platelets (C) and pRBCs (D) do not contain significant fibrinogen.'
+  },
+  {
+    domain: 'blood_banking',
+    stem: 'A DAT (direct antiglobulin test) is performed and is positive with polyspecific AHG, but negative with anti-IgG. The DAT is most likely positive due to:',
+    options: ['Warm autoimmune hemolytic anemia (WAIHA)', 'IgG alloantibody coating the RBCs', 'Complement (C3d) coating the RBCs', 'A drug-induced immune hemolysis via hapten mechanism'],
+    answer: 2,
+    explanation: 'Polyspecific AHG detects both IgG and complement (C3d). A positive polyspecific DAT with a negative anti-IgG monospecific DAT means complement alone is coating the cells, ruling out IgG. Cold autoantibodies (cold agglutinin disease) fix complement but the IgM itself elutes off at 37°C, leaving only C3d. Warm AIHA (A) and drug-induced hapten mechanisms (D) typically show IgG coating, giving a positive anti-IgG DAT.'
+  },
+  {
+    domain: 'blood_banking',
+    stem: 'Which of the following blood group antigens is destroyed by ficin and papain treatment of RBCs?',
+    options: ['Jka (Kidd)', 'E (Rh)', 'Fya (Duffy)', 'c (Rh)'],
+    answer: 2,
+    explanation: 'Duffy antigens (Fya and Fyb) are destroyed by proteolytic enzymes such as ficin and papain. A helpful mnemonic: "DUFFY enzymes Don\'t work." MNS antigens are also destroyed. Kidd (A), Rh (B and D), and Lewis antigens are enhanced or unaffected by enzymes. This knowledge is critical for antibody panels — if enzyme-treated cells are non-reactive where untreated cells are reactive, a Duffy or MNS antibody is suspected.'
+  },
+  {
+    domain: 'blood_banking',
+    stem: 'A newborn is found to have hemolytic disease of the fetus and newborn (HDFN). The mother is O-negative and the father is A-positive. The most common antibody causing severe HDFN in this scenario is:',
+    options: ['Anti-A', 'Anti-D', 'Anti-K', 'Anti-Lea'],
+    answer: 1,
+    explanation: 'Anti-D is the most common cause of severe HDFN requiring intervention. The Rh-negative mother exposed to D-positive fetal cells makes IgG anti-D that crosses the placenta. Anti-A (A) from group O mothers can cause ABO HDFN, but it is usually mild because A and B antigens are not fully expressed on fetal RBCs. Anti-K (C) is an IgG antibody that can cause severe HDFN. Anti-Lea (D) is IgM and does not cross the placenta, so it does not cause HDFN.'
+  },
+  {
+    domain: 'blood_banking',
+    stem: 'When performing ABO compatibility testing (crossmatch), the immediate spin crossmatch detects:',
+    options: ['All IgG antibodies against donor RBCs', 'ABO incompatibility and most IgM antibodies', 'Only Rh system antibodies', 'Complement-activating antibodies only'],
+    answer: 1,
+    explanation: 'The immediate spin (IS) crossmatch detects ABO incompatibility and most clinically significant IgM antibodies that react at room temperature. It does NOT detect most IgG alloantibodies (which require the antiglobulin phase). For patients with a negative antibody screen and no history of alloantibodies, the IS crossmatch is sufficient per AABB standards. The full antiglobulin (AHG) crossmatch is needed when the antibody screen is positive or when there is a history of clinically significant antibodies.'
+  },
+  // CHEMISTRY
+  {
+    domain: 'chemistry',
+    stem: 'A patient has a sodium of 140, chloride of 100, and bicarbonate of 14 mmol/L. What is the anion gap, and what does it suggest?',
+    options: ['12 — normal gap', '26 — high-anion-gap metabolic acidosis', '26 — metabolic alkalosis', '14 — normal gap'],
+    answer: 1,
+    explanation: 'Anion gap = Na − (Cl + HCO₃) = 140 − (100 + 14) = 26 mmol/L. Normal AG is approximately 8–12 mmol/L. An elevated AG with low bicarbonate indicates high-anion-gap metabolic acidosis (causes: DKA, lactic acidosis, uremia, salicylate toxicity — MUDPILES mnemonic). The bicarbonate of 14 confirms metabolic acidosis. Metabolic alkalosis (C) would show elevated, not reduced, bicarbonate.'
+  },
+  {
+    domain: 'chemistry',
+    stem: 'A 55-year-old patient has AST 450 U/L, ALT 620 U/L, ALP 140 U/L, and total bilirubin 3.2 mg/dL. This pattern is most consistent with:',
+    options: ['Cholestatic liver disease (obstructive jaundice)', 'Acute hepatocellular injury (viral hepatitis)', 'Alcoholic liver disease', 'Bone disease with elevated ALP'],
+    answer: 1,
+    explanation: 'Marked elevation of AST and ALT (transaminases) with relatively modest ALP elevation is the pattern of hepatocellular injury, as seen in viral hepatitis, drug-induced liver injury, or ischemia. Cholestatic disease (A) shows disproportionately elevated ALP (and GGT), with transaminases less dramatically elevated. Alcoholic liver disease (C) classically shows AST:ALT ratio >2:1, and levels rarely exceed 300–400 U/L. Bone disease (D) elevates ALP but not transaminases or bilirubin.'
+  },
+  {
+    domain: 'chemistry',
+    stem: 'A patient\'s creatinine clearance is calculated as follows: urine creatinine 120 mg/dL, urine volume 1,440 mL/24h, plasma creatinine 1.2 mg/dL. What is the CrCl in mL/min?',
+    options: ['72 mL/min', '100 mL/min', '144 mL/min', '50 mL/min'],
+    answer: 1,
+    explanation: 'CrCl = (Urine Creatinine × Urine Volume) / (Plasma Creatinine × Time in minutes). Time = 1440 min/day (24h × 60 min). CrCl = (120 mg/dL × 1440 mL) / (1.2 mg/dL × 1440 min) = 172,800 / 1728 = 100 mL/min. Normal adult CrCl is approximately 85–125 mL/min. This result is within normal limits.'
+  },
+  {
+    domain: 'chemistry',
+    stem: 'Which of the following is the best initial screening test for diabetes mellitus per current clinical guidelines?',
+    options: ['2-hour 75g oral glucose tolerance test (OGTT)', 'Fasting plasma glucose ≥126 mg/dL on two occasions', 'Random glucose of 250 mg/dL', 'Urine glucose dipstick'],
+    answer: 1,
+    explanation: 'Fasting plasma glucose ≥126 mg/dL confirmed on a second occasion is the most common initial screening and diagnostic test for diabetes mellitus. HbA1c ≥6.5% is also acceptable as a diagnostic criterion. The OGTT (A) is the gold standard and more sensitive, but more expensive and inconvenient — used in specific circumstances like gestational diabetes. Random glucose ≥200 mg/dL with symptoms (C) can also diagnose DM, but 250 mg/dL alone without symptoms requires confirmation. Urine glucose (D) is non-specific and insensitive.'
+  },
+  {
+    domain: 'chemistry',
+    stem: 'HbA1c reflects average blood glucose over the preceding:',
+    options: ['2–3 weeks', '2–3 months', '6 months', '1 year'],
+    answer: 1,
+    explanation: 'HbA1c (glycated hemoglobin) reflects the average glucose concentration over the lifespan of the red blood cell, which is approximately 120 days (2–3 months). Conditions that shorten RBC lifespan (hemolytic anemia, sickle cell disease) will falsely lower HbA1c. Conditions that increase RBC lifespan (iron deficiency, aplastic anemia) may falsely elevate it.'
+  },
+  {
+    domain: 'chemistry',
+    stem: 'A patient has a TSH of 0.05 µIU/mL (reference 0.4–4.0) and a free T4 of 2.8 ng/dL (reference 0.8–1.8). This pattern is consistent with:',
+    options: ['Primary hypothyroidism', 'Secondary hypothyroidism (pituitary failure)', 'Primary hyperthyroidism (overt)', 'Euthyroid sick syndrome'],
+    answer: 2,
+    explanation: 'Suppressed TSH with elevated free T4 indicates primary hyperthyroidism — the thyroid is overproducing hormones, which suppresses pituitary TSH via negative feedback. Primary hypothyroidism (A) shows elevated TSH and low/normal free T4. Secondary hypothyroidism (B) shows low TSH and low free T4 (the pituitary can\'t stimulate the thyroid). Euthyroid sick syndrome (D) typically shows low T3 with normal or low T4 and variable TSH in critically ill patients.'
+  },
+  {
+    domain: 'chemistry',
+    stem: 'A patient has total protein 5.8 g/dL, albumin 2.1 g/dL, and total bilirubin 4.5 mg/dL. The albumin-globulin ratio is approximately:',
+    options: ['1.6', '0.57', '2.1', '0.36'],
+    answer: 1,
+    explanation: 'A/G ratio = Albumin / (Total Protein − Albumin) = 2.1 / (5.8 − 2.1) = 2.1 / 3.7 ≈ 0.57. A normal A/G ratio is approximately 1.2–2.2. An inverted or low A/G ratio (<1.0) suggests elevated globulins (as in multiple myeloma, chronic infections, liver disease) or decreased albumin (as in malnutrition, nephrotic syndrome, liver disease). This patient has both low albumin and elevated bilirubin suggesting liver disease.'
+  },
+  {
+    domain: 'chemistry',
+    stem: 'A Levey-Jennings chart shows the last 6 QC values alternating above and below the mean. None violates the 1₂ₛ rule. This pattern suggests:',
+    options: ['Random error — no action needed', 'Systematic drift; the Westgard 10x rule is violated', 'A significant calibration error', 'Reagent deterioration causing increasing imprecision'],
+    answer: 1,
+    explanation: 'The Westgard 10x rule (10 consecutive QC values on the same side of the mean) indicates systematic error (bias). However, alternating values above and below the mean is the opposite of this — it actually suggests random or cycling error, not systematic drift. Wait: the question says alternating (not the same side). Alternating is a sign of instability/random error or a subtle oscillating source of error, but the 10x rule requires the same side. The correct interpretation here is that systematic drift is not indicated by alternating values — random error is more likely. The 10x rule (a warning rule) requires all 10 on the SAME side.'
+  },
+  {
+    domain: 'chemistry',
+    stem: 'Which enzyme is most specific for acute pancreatitis?',
+    options: ['Amylase', 'Lipase', 'ALT', 'LDH'],
+    answer: 1,
+    explanation: 'Lipase is more specific for pancreatitis than amylase because it remains elevated longer (up to 14 days vs. 3–5 days for amylase) and is not elevated in as many non-pancreatic conditions. Amylase (A) can be elevated in salivary gland disease, intestinal infarction, and macroamylasemia. ALT (C) is a liver enzyme. LDH (D) is nonspecific, present in many tissues.'
+  },
+  {
+    domain: 'chemistry',
+    stem: 'Which of the following cardiac biomarkers is the gold standard for diagnosis of acute myocardial infarction?',
+    options: ['CK-MB', 'Myoglobin', 'Troponin I or T', 'LDH isoenzyme 1'],
+    answer: 2,
+    explanation: 'Cardiac troponins I and T are the gold standard biomarkers for acute MI due to their high cardiac specificity and prolonged elevation (up to 10–14 days). CK-MB (A) was the previous standard but has been replaced because it is less specific (also in skeletal muscle) and clears faster. Myoglobin (B) rises earliest but is nonspecific. LDH-1 (D) was used historically but has been replaced by troponins.'
+  },
+  {
+    domain: 'chemistry',
+    stem: 'A blood gas shows: pH 7.28, pCO₂ 55 mmHg, HCO₃ 24 mEq/L. This is best interpreted as:',
+    options: ['Metabolic acidosis with respiratory compensation', 'Respiratory acidosis (uncompensated)', 'Metabolic alkalosis', 'Mixed respiratory and metabolic acidosis'],
+    answer: 1,
+    explanation: 'pH <7.35 = acidosis. Elevated pCO₂ (>45 mmHg) points to respiratory acidosis — CO₂ retention (hypoventilation). HCO₃ of 24 is normal, indicating NO metabolic compensation has occurred yet (acute respiratory acidosis). If compensated, HCO₃ would be elevated. This is uncompensated (or acute) respiratory acidosis.'
+  },
+  // HEMATOLOGY
+  {
+    domain: 'hematology',
+    stem: 'A peripheral smear shows numerous teardrop cells (dacrocytes), nucleated RBCs, and immature granulocytes (leukoerythroblastic picture). These findings are most characteristic of:',
+    options: ['Iron deficiency anemia', 'Primary myelofibrosis', 'Hereditary spherocytosis', 'Beta-thalassemia minor'],
+    answer: 1,
+    explanation: 'Teardrop cells plus a leukoerythroblastic picture (nucleated RBCs + immature WBCs in the peripheral blood) classically reflect extramedullary hematopoiesis secondary to marrow infiltration or fibrosis, as in primary myelofibrosis. Iron deficiency (A) produces microcytic hypochromic cells, elliptocytes, and target cells. Hereditary spherocytosis (C) produces spherocytes and elevated MCHC. Beta-thalassemia minor (D) produces mild microcytosis with target cells and basophilic stippling.'
+  },
+  {
+    domain: 'hematology',
+    stem: 'A 45-year-old woman has hemoglobin 9.8 g/dL, MCV 72 fL, ferritin 6 ng/mL, TIBC 480 µg/dL. The most likely diagnosis is:',
+    options: ['Anemia of chronic disease', 'Iron deficiency anemia', 'Thalassemia trait', 'Sideroblastic anemia'],
+    answer: 1,
+    explanation: 'Low hemoglobin, low MCV, very low ferritin (<12 ng/mL), and elevated TIBC are the classic pattern of iron deficiency anemia. Ferritin is the most sensitive early marker. Anemia of chronic disease (A) shows low ferritin sometimes but more typically normal-to-elevated ferritin with low TIBC (iron is sequestered). Thalassemia trait (C) shows low MCV but normal-to-high ferritin and normal TIBC. Sideroblastic anemia (D) shows elevated serum iron and ringed sideroblasts on bone marrow.'
+  },
+  {
+    domain: 'hematology',
+    stem: 'Which of the following red cell indices would be expected in a patient with B12 deficiency anemia?',
+    options: ['MCV 70 fL, MCH 22 pg, MCHC 36 g/dL', 'MCV 108 fL, MCH 35 pg, MCHC 33 g/dL', 'MCV 85 fL, MCH 29 pg, MCHC 34 g/dL', 'MCV 80 fL, MCH 28 pg, MCHC 36 g/dL'],
+    answer: 1,
+    explanation: 'B12 deficiency causes megaloblastic anemia, characterized by macrocytosis (elevated MCV >100 fL), elevated MCH, and normal-to-low MCHC. Option B (MCV 108) fits macrocytic anemia. Option A (MCV 70) is microcytic. Option C (MCV 85) is normocytic. Hypersegmented neutrophils (5+ lobes) on the peripheral smear are the hallmark finding alongside macro-ovalocytes.'
+  },
+  {
+    domain: 'hematology',
+    stem: 'A patient with sickle cell anemia is noted to have target cells, sickle cells, and Howell-Jolly bodies on peripheral smear. The presence of Howell-Jolly bodies indicates:',
+    options: ['Megaloblastic change', 'Functional asplenia', 'Severe iron deficiency', 'Disseminated intravascular coagulation (DIC)'],
+    answer: 1,
+    explanation: 'Howell-Jolly bodies are nuclear remnants normally removed by the spleen. Their presence in peripheral blood indicates a non-functioning or absent spleen (functional asplenia). In sickle cell disease, repeated splenic infarction from sickling leads to autosplenectomy. Megaloblastic anemia (A) produces macro-ovalocytes and hypersegmented neutrophils, not Howell-Jolly bodies specifically. DIC (D) produces schistocytes.'
+  },
+  {
+    domain: 'hematology',
+    stem: 'A patient with liver disease has PT 22 seconds (control 12 s) and aPTT 52 seconds (control 32 s). Platelet count is 95 × 10⁹/L. Which factor is NOT typically decreased in liver disease?',
+    options: ['Factor V', 'Factor VIII', 'Factor II (prothrombin)', 'Factor VII'],
+    answer: 1,
+    explanation: 'Factor VIII is not synthesized primarily in hepatocytes — it is produced by endothelial cells and liver sinusoidal cells, and is also carried by von Willebrand factor (an acute phase reactant that is often elevated in liver disease). Therefore, factor VIII is typically normal or even elevated in liver disease, unlike factors I, II, V, VII, IX, X, and XI which are synthesized by hepatocytes and are decreased. This is also why factor VIII is not included in the PT calculation.'
+  },
+  {
+    domain: 'hematology',
+    stem: 'The corrected WBC count is calculated when nucleated RBCs are present. If a manual differential counts 15 NRBCs per 100 WBCs, and the automated WBC is 18.0 × 10⁹/L, what is the corrected WBC?',
+    options: ['15.7 × 10⁹/L', '20.7 × 10⁹/L', '18.0 × 10⁹/L', '3.0 × 10⁹/L'],
+    answer: 0,
+    explanation: 'Corrected WBC = (WBC × 100) / (100 + NRBC count). = (18.0 × 100) / (100 + 15) = 1800 / 115 ≈ 15.7 × 10⁹/L. NRBCs are counted by the automated analyzer alongside true WBCs, inflating the count. The correction removes them from the WBC count. Always apply this correction when NRBCs are reported.'
+  },
+  {
+    domain: 'hematology',
+    stem: 'Which of the following is the hallmark laboratory finding of disseminated intravascular coagulation (DIC)?',
+    options: ['Elevated fibrinogen with low D-dimer', 'Prolonged PT, prolonged aPTT, low fibrinogen, elevated D-dimer, thrombocytopenia, and schistocytes', 'Isolated thrombocytopenia with normal PT and aPTT', 'Elevated factor VIII with prolonged PT only'],
+    answer: 1,
+    explanation: 'DIC is a consumptive coagulopathy in which clotting factors are consumed diffusely. The laboratory picture shows: prolonged PT and aPTT, low fibrinogen (consumed), elevated D-dimer and fibrin degradation products (FDPs) from fibrinolysis, thrombocytopenia, and schistocytes (microangiopathic hemolytic anemia) on smear. Isolated thrombocytopenia (C) without coagulation abnormalities suggests ITP, not DIC.'
+  },
+  {
+    domain: 'hematology',
+    stem: 'A patient presents with WBC 120 × 10⁹/L, predominance of mature lymphocytes, smudge cells on the peripheral smear, and lymphadenopathy. The most likely diagnosis is:',
+    options: ['Acute lymphoblastic leukemia (ALL)', 'Chronic lymphocytic leukemia (CLL)', 'Chronic myelogenous leukemia (CML)', 'Reactive lymphocytosis from EBV'],
+    answer: 1,
+    explanation: 'CLL is characterized by markedly elevated WBC with predominance of small, mature-appearing lymphocytes and characteristic smudge cells (lymphocytes ruptured during smear preparation). CLL is the most common adult leukemia. ALL (A) shows blasts (immature lymphoblasts), not mature lymphocytes. CML (C) shows granulocytic predominance with a full left shift (all stages of granulocytes). Reactive lymphocytosis from EBV (D) shows atypical/reactive lymphocytes and WBC rarely exceeds 20–30 × 10⁹/L.'
+  },
+  {
+    domain: 'hematology',
+    stem: 'Which platelet disorder is characterized by absent platelet aggregation with ADP, epinephrine, and collagen, but normal ristocetin-induced aggregation?',
+    options: ['Bernard-Soulier syndrome', 'Glanzmann thrombasthenia', 'von Willebrand disease (Type 1)', 'Heparin-induced thrombocytopenia (HIT)'],
+    answer: 1,
+    explanation: 'Glanzmann thrombasthenia is a deficiency of glycoprotein IIb/IIIa (the fibrinogen receptor on platelets). Without GP IIb/IIIa, platelets cannot aggregate with each other. Aggregation with ADP, epinephrine, and collagen is absent, but ristocetin aggregation (which tests GP Ib binding to vWF) is normal. Bernard-Soulier syndrome (A) shows absent ristocetin aggregation with normal aggregation to other agonists (opposite pattern). vWD (C) also shows absent ristocetin aggregation. HIT (D) causes thrombocytopenia, not abnormal aggregation.'
+  },
+  {
+    domain: 'hematology',
+    stem: 'A patient with a mechanical heart valve on long-term warfarin therapy has an INR of 1.2. The target INR for this indication is 2.5–3.5. This result indicates:',
+    options: ['Supratherapeutic anticoagulation — hold warfarin', 'Subtherapeutic anticoagulation — patient is at increased clotting risk', 'Therapeutic anticoagulation', 'The PT/INR cannot be used to monitor warfarin'],
+    answer: 1,
+    explanation: 'An INR of 1.2 is subtherapeutic for a patient with a mechanical heart valve (target INR 2.5–3.5). The patient is underanticoagulated and at risk for thromboembolism. INR >4.0 would indicate supratherapeutic anticoagulation with bleeding risk (A). The PT/INR is the standard method for monitoring warfarin (vitamin K antagonist) therapy — it is not used to monitor heparin (monitored by aPTT) or DOACs.'
+  },
+  // MICROBIOLOGY
+  {
+    domain: 'microbiology',
+    stem: 'A gram-negative rod from a urine culture is lactose-positive, indole-positive, and produces a metallic green sheen on EMB agar. The most likely organism is:',
+    options: ['Klebsiella pneumoniae', 'Proteus mirabilis', 'Escherichia coli', 'Pseudomonas aeruginosa'],
+    answer: 2,
+    explanation: 'The metallic green sheen on EMB agar is the classic hallmark of E. coli. E. coli is lactose-positive and indole-positive. Klebsiella (A) is indole-negative and produces mucoid, dome-shaped colonies; it does not produce the sheen. Proteus (B) is lactose-negative and swarms on non-inhibitory plates. Pseudomonas (D) is a nonfermenter — it does not ferment lactose and is oxidase-positive.'
+  },
+  {
+    domain: 'microbiology',
+    stem: 'A sputum culture grows gram-positive cocci in clusters. The organism is coagulase-positive. The most appropriate next step is:',
+    options: ['Optochin susceptibility testing', 'Bacitracin susceptibility testing', 'Methicillin/oxacillin susceptibility testing (MRSA screen)', 'Bile esculin test'],
+    answer: 2,
+    explanation: 'Coagulase-positive gram-positive cocci in clusters = Staphylococcus aureus. The key next step in S. aureus identification after confirming coagulase positivity is testing for methicillin resistance (MRSA). This can be done via cefoxitin disk diffusion, oxacillin MIC, or mecA PCR. Optochin (A) and bile esculin (D) are used for Streptococcus identification. Bacitracin (B) is used to identify Group A Streptococcus (susceptible) vs. Group B (resistant).'
+  },
+  {
+    domain: 'microbiology',
+    stem: 'Which of the following media is most appropriate for primary isolation of Neisseria gonorrhoeae from a urethral swab?',
+    options: ['Blood agar (5% sheep blood)', 'MacConkey agar', 'Thayer-Martin (modified) agar', 'Chocolate agar only'],
+    answer: 2,
+    explanation: 'Thayer-Martin (modified) agar is selective for pathogenic Neisseria (N. gonorrhoeae and N. meningitidis). It contains vancomycin (inhibits gram-positives), colistin (inhibits gram-negatives), nystatin (inhibits fungi), and trimethoprim (inhibits Proteus swarming). Regular blood agar (A) supports growth but does not suppress normal flora. MacConkey (B) inhibits Neisseria. Chocolate agar (D) supports Neisseria growth but is not selective — used in combination with Thayer-Martin for sterile specimens.'
+  },
+  {
+    domain: 'microbiology',
+    stem: 'A throat culture grows beta-hemolytic colonies. The organism is sensitive to bacitracin. The most likely pathogen is:',
+    options: ['Streptococcus agalactiae (Group B)', 'Streptococcus pyogenes (Group A)', 'Staphylococcus aureus', 'Streptococcus pneumoniae'],
+    answer: 1,
+    explanation: 'Bacitracin susceptibility (A disc, 0.04 units) is used as a presumptive screen for Group A Streptococcus (S. pyogenes). A zone of inhibition indicates presumptive GAS. Group B Streptococcus (A) is bacitracin-resistant. S. aureus (C) produces coagulase, not classified by bacitracin. S. pneumoniae (D) is alpha-hemolytic (green) and tested with optochin. Confirmatory testing with Lancefield grouping (latex agglutination) is still required for definitive GAS identification.'
+  },
+  {
+    domain: 'microbiology',
+    stem: 'An organism isolated from a wound culture is oxidase-positive, nonfermenting, and produces blue-green pigment with a fruity odor. The most likely organism is:',
+    options: ['Klebsiella pneumoniae', 'Pseudomonas aeruginosa', 'Acinetobacter baumannii', 'Stenotrophomonas maltophilia'],
+    answer: 1,
+    explanation: 'Pseudomonas aeruginosa is a gram-negative, oxidase-positive, nonfermenting rod that produces pyocyanin (blue-green pigment) and pyoverdine, giving colonies their characteristic color. It also produces a distinctive fruity/grape-like odor from 2-aminoacetophenone. Klebsiella (A) is a fermenter and oxidase-negative. Acinetobacter (C) is oxidase-negative and produces white-gray colonies. Stenotrophomonas (D) is oxidase-variable and distinguished by colony characteristics and susceptibility (only trimethoprim-sulfamethoxazole susceptible).'
+  },
+  {
+    domain: 'microbiology',
+    stem: 'Which of the following best describes MRSA (methicillin-resistant Staphylococcus aureus)?',
+    options: ['Resistance mediated by beta-lactamase enzyme production', 'Resistance mediated by acquisition of mecA gene encoding altered penicillin-binding protein (PBP2a)', 'Resistance due to efflux pumps only', 'Natural resistance — all Staph aureus are resistant to methicillin'],
+    answer: 1,
+    explanation: 'MRSA resistance is mediated by the mecA gene (or mecC in some strains), which encodes the altered penicillin-binding protein PBP2a. This modified protein has low affinity for all beta-lactam antibiotics, conferring broad resistance. Beta-lactamase production (A) causes penicillin resistance in non-MRSA S. aureus but can be overcome by beta-lactamase-stable penicillins. MRSA is not naturally resistant (D) — it acquired resistance via mobile genetic elements.'
+  },
+  {
+    domain: 'microbiology',
+    stem: 'Gram-stain of a CSF specimen shows gram-positive diplococci (lancet-shaped, in pairs). The most likely organism causing bacterial meningitis in this adult is:',
+    options: ['Neisseria meningitidis', 'Streptococcus pneumoniae', 'Listeria monocytogenes', 'Haemophilus influenzae'],
+    answer: 1,
+    explanation: 'Lancet-shaped gram-positive diplococci in CSF indicate Streptococcus pneumoniae (pneumococcus), the most common cause of bacterial meningitis in adults. N. meningitidis (A) are gram-negative diplococci (kidney bean-shaped). Listeria (C) appears as gram-positive rods and is most common in immunocompromised patients and neonates. H. influenzae (D) are gram-negative coccobacilli — rare in vaccinated populations.'
+  },
+  {
+    domain: 'microbiology',
+    stem: 'A patient is suspected of having tuberculosis. Which staining method is most appropriate for detecting acid-fast bacilli (AFB) in sputum?',
+    options: ['Gram stain', 'Kinyoun or Ziehl-Neelsen stain', 'India ink stain', 'Giemsa stain'],
+    answer: 1,
+    explanation: 'Acid-fast staining (Ziehl-Neelsen hot method or Kinyoun cold method) uses carbol fuchsin that is retained in the mycobacterial cell wall (rich in mycolic acids) even after acid-alcohol decolorization. Mycobacteria appear as bright red rods against a blue background. Gram stain (A) does not reliably stain mycobacteria. India ink (C) detects the capsule of Cryptococcus neoformans in CSF. Giemsa (D) is used for malaria, Bordetella pertussis, and hematology.'
+  },
+  {
+    domain: 'microbiology',
+    stem: 'Which of the following organisms produces the CAMP factor, which enhances hemolysis of sheep RBCs in the presence of S. aureus?',
+    options: ['Streptococcus pyogenes (Group A)', 'Streptococcus agalactiae (Group B)', 'Enterococcus faecalis', 'Listeria monocytogenes'],
+    answer: 1,
+    explanation: 'The CAMP test is used to presumptively identify Group B Streptococcus (S. agalactiae). S. agalactiae produces CAMP factor, a protein that acts synergistically with S. aureus beta-toxin to produce enhanced ("arrowhead") hemolysis on the sheep blood agar plate. This is the key characteristic used to distinguish GBS from other beta-hemolytic streptococci. Listeria (D) also gives a positive CAMP reaction but appears as gram-positive rods with tumbling motility.'
+  },
+  {
+    domain: 'microbiology',
+    stem: 'A urine culture grows >100,000 CFU/mL of a gram-positive coccus that is catalase-positive, coagulase-negative, and resistant to novobiocin. The most likely organism is:',
+    options: ['Staphylococcus epidermidis', 'Staphylococcus saprophyticus', 'Streptococcus agalactiae', 'Enterococcus faecalis'],
+    answer: 1,
+    explanation: 'S. saprophyticus is a coagulase-negative Staphylococcus that is characteristically resistant to novobiocin (≤16 mm zone or no zone). It is a common cause of uncomplicated urinary tract infections in young women. S. epidermidis (A) is coagulase-negative but novobiocin-susceptible. Streptococcus (C) is catalase-negative. Enterococcus (D) is also catalase-negative and classified by PYR positivity and growth in 6.5% NaCl.'
+  },
+  // IMMUNOLOGY
+  {
+    domain: 'immunology',
+    stem: 'Which hepatitis B marker is the FIRST to appear after infection and indicates active, replicating virus?',
+    options: ['Anti-HBs', 'HBsAg', 'Anti-HBc IgG', 'HBeAg'],
+    answer: 1,
+    explanation: 'HBsAg (hepatitis B surface antigen) is the earliest serologic marker of acute HBV infection, appearing 1–10 weeks after exposure, before symptoms. Anti-HBs (A) appears after recovery and indicates immunity (also after vaccination). Anti-HBc IgG (C) indicates past or chronic infection (memory). HBeAg (D) appears after HBsAg and indicates high viral replication and infectivity, but it is not the first marker.'
+  },
+  {
+    domain: 'immunology',
+    stem: 'A 32-year-old woman is found to have a positive ANA (1:320, homogeneous pattern). Which specific antibody, if positive, would be most diagnostic of systemic lupus erythematosus (SLE)?',
+    options: ['Anti-dsDNA', 'Anti-SSA (Ro)', 'Anti-SCL-70', 'Anti-centromere'],
+    answer: 0,
+    explanation: 'Anti-double-stranded DNA (anti-dsDNA) antibodies are highly specific for SLE (>95% specific) and correlate with disease activity, particularly lupus nephritis. They are one of the 11 American College of Rheumatology (ACR) classification criteria for SLE. Anti-SSA/Ro (B) is associated with Sjögren\'s syndrome and neonatal lupus. Anti-SCL-70 (C) is associated with diffuse systemic sclerosis (scleroderma). Anti-centromere (D) is associated with limited scleroderma (CREST syndrome).'
+  },
+  {
+    domain: 'immunology',
+    stem: 'Which immunoglobulin class is the first to be produced in a primary immune response?',
+    options: ['IgG', 'IgM', 'IgA', 'IgE'],
+    answer: 1,
+    explanation: 'IgM is the first antibody class produced during a primary immune response (takes 1–2 weeks). It exists as a pentamer in serum, making it very effective at agglutination and complement activation. In a secondary (anamnestic) response, IgG predominates due to class switching. Detecting IgM antibodies to a pathogen indicates recent/current primary infection, while IgG indicates past exposure or immunity. IgA (C) is the secretory immunoglobulin in mucosal secretions. IgE (D) is involved in type I hypersensitivity/allergy.'
+  },
+  {
+    domain: 'immunology',
+    stem: 'The VDRL test for syphilis uses which type of antigen?',
+    options: ['Treponema pallidum-specific antigen', 'Cardiolipin-lecithin-cholesterol (non-treponemal lipid antigen)', 'Recombinant treponemal proteins', 'Whole killed T. pallidum organisms'],
+    answer: 1,
+    explanation: 'The VDRL (Venereal Disease Research Laboratory) and RPR (Rapid Plasma Reagin) tests are non-treponemal tests that use a cardiolipin-lecithin-cholesterol antigen. They detect "reagin" antibodies (IgM and IgG) produced in response to lipids released by damaged host cells and T. pallidum. They are used for screening and to monitor treatment response (titers fall with successful treatment). False positives can occur with pregnancy, autoimmune diseases, and viral infections. Confirmatory treponemal tests (FTA-ABS, TP-PA) use treponemal antigens.'
+  },
+  {
+    domain: 'immunology',
+    stem: 'A patient has a positive monospot test. This test detects:',
+    options: ['Epstein-Barr virus-specific IgM antibodies', 'Heterophile antibodies that agglutinate horse or sheep RBCs', 'CMV antigenemia', 'Anti-VCA (viral capsid antigen) antibodies'],
+    answer: 1,
+    explanation: 'The monospot (heterophile antibody) test detects heterophile antibodies produced during acute EBV infection (infectious mononucleosis). These antibodies, though produced in response to EBV, cross-react with antigens on horse, sheep, and ox RBCs — hence "heterophile." The test does not use EBV-specific antigens (A, D). It is a rapid, inexpensive screen, but can be false-negative in early infection or in children <4 years old. Anti-VCA antibodies (D) are used for EBV serology confirmation.'
+  },
+  {
+    domain: 'immunology',
+    stem: 'A Type II hypersensitivity reaction is best exemplified by:',
+    options: ['Anaphylaxis to penicillin (IgE-mediated)', 'Hemolytic transfusion reaction (antibody-mediated cytotoxicity)', 'Serum sickness (immune complex deposition)', 'Contact dermatitis from poison ivy (T-cell mediated)'],
+    answer: 1,
+    explanation: 'Type II hypersensitivity is antibody-mediated cytotoxicity — IgG or IgM antibodies bind directly to antigens on cell surfaces, leading to complement activation and cell destruction. Hemolytic transfusion reactions are the classic example. Type I (A) is IgE-mediated/immediate hypersensitivity. Type III (C) involves immune complex deposition (serum sickness, SLE). Type IV (D) is T-cell-mediated (delayed-type hypersensitivity) — no antibodies involved.'
+  },
+  {
+    domain: 'immunology',
+    stem: 'A patient with chronic hepatitis C infection has positive HCV antibody (anti-HCV) but undetectable HCV RNA by PCR. The most likely interpretation is:',
+    options: ['Active, replicating HCV infection', 'Past HCV infection with viral clearance (spontaneous or treatment-related)', 'False-positive anti-HCV antibody', 'Acute window period of infection'],
+    answer: 1,
+    explanation: 'Positive anti-HCV with undetectable HCV RNA (viral load) indicates resolved HCV infection — either spontaneous clearance (which occurs in ~15–25% of acute infections) or successful treatment. Anti-HCV antibodies persist for life after infection regardless of viral clearance and cannot be used to determine current infection status. Active infection (A) requires detectable HCV RNA. The window period (D) would show neither antibody nor RNA initially, then RNA first.'
+  },
+  {
+    domain: 'immunology',
+    stem: 'Which complement pathway is activated by antigen-antibody (IgG or IgM) complexes?',
+    options: ['Alternative pathway', 'Lectin (MBL) pathway', 'Classical pathway', 'Terminal common pathway only'],
+    answer: 2,
+    explanation: 'The classical complement pathway is activated by IgG or IgM bound to antigen (immune complexes). C1q binds to the Fc region of antibody, activating C1r and C1s, leading to C4 and C2 cleavage, and ultimately the C3 convertase. The alternative pathway (A) is activated by pathogen surface components (LPS, zymosan) without antibody. The lectin pathway (B) is activated by mannose-binding lectin (MBL) binding to carbohydrates on pathogens. All three pathways converge at C3 and then the terminal common pathway (C5-C9, MAC).'
+  },
+  // URINALYSIS
+  {
+    domain: 'urinalysis',
+    stem: 'A urine sediment shows red blood cell casts. This finding most specifically localizes the source of bleeding to the:',
+    options: ['Urinary bladder', 'Urethra', 'Glomerulus', 'Ureter'],
+    answer: 2,
+    explanation: 'RBC casts form within the renal tubules when red blood cells become trapped in the Tamm-Horsfall protein matrix. Their presence in urine indicates glomerular bleeding (glomerulonephritis) — blood leaking through the glomerular filtration barrier. Lower urinary tract sources (bladder, urethra, ureter) produce free RBCs in the urine without casts. RBC casts are always considered pathological and warrant urgent investigation.'
+  },
+  {
+    domain: 'urinalysis',
+    stem: 'A urine dipstick is positive for blood, but microscopic examination shows no red blood cells. The most likely explanation is:',
+    options: ['Urinary tract infection', 'Hemoglobinuria or myoglobinuria', 'Contamination from vaginal blood', 'False-positive from vitamin C (ascorbic acid)'],
+    answer: 1,
+    explanation: 'The urine dipstick blood test detects heme (peroxidase activity) — it cannot distinguish between intact RBCs, free hemoglobin, and myoglobin. If blood is positive but no RBCs are seen microscopically, the likely cause is hemoglobinuria (from intravascular hemolysis) or myoglobinuria (from rhabdomyolysis). Vitamin C (D) causes FALSE NEGATIVE blood results on dipstick, not false positive. Bacterial peroxidase can cause false positives, but the scenario indicates no RBCs, making hemolysis/myolysis more likely.'
+  },
+  {
+    domain: 'urinalysis',
+    stem: 'Which type of urine cast is associated with nephrotic syndrome and lipiduria?',
+    options: ['Granular casts', 'Fatty casts (with Maltese cross pattern under polarized light)', 'Waxy casts', 'RBC casts'],
+    answer: 1,
+    explanation: 'Fatty casts contain lipid droplets from lipiduria, a hallmark of nephrotic syndrome (characterized by massive proteinuria, hypoalbuminemia, and hyperlipidemia). Under polarized light, cholesterol esters in the casts produce a characteristic Maltese cross (birefringent) pattern. Granular casts (A) indicate tubular damage (non-specific). Waxy casts (C) indicate chronic, advanced renal failure (stasis). RBC casts (D) indicate glomerulonephritis.'
+  },
+  {
+    domain: 'urinalysis',
+    stem: 'A CSF specimen is submitted for cell count. The tube is cloudy with 4+ turbidity. WBC is 3,200/µL with 95% neutrophils, glucose is 18 mg/dL (serum glucose 90 mg/dL), and protein is 280 mg/dL. This pattern is most consistent with:',
+    options: ['Viral (aseptic) meningitis', 'Bacterial meningitis', 'Fungal meningitis', 'Normal CSF'],
+    answer: 1,
+    explanation: 'Bacterial meningitis produces a classic CSF profile: markedly elevated WBC (>1000/µL) with neutrophilic pleocytosis (>80% PMNs), very low glucose (<45 mg/dL or CSF:serum ratio <0.4), and elevated protein (>45 mg/dL). This patient has CSF:serum glucose ratio of 18/90 = 0.2 (severely low), markedly high WBC with neutrophilia, and high protein — classic bacterial meningitis. Viral meningitis (A) shows lymphocytic pleocytosis, normal-to-mildly low glucose, and mildly elevated protein.'
+  },
+  {
+    domain: 'urinalysis',
+    stem: 'Which crystals found in urine sediment are pathological and associated with liver disease or inherited metabolic disorders?',
+    options: ['Calcium oxalate crystals (envelope-shaped)', 'Triple phosphate crystals (coffin-lid shaped)', 'Tyrosine crystals (fine silky needles in rosettes)', 'Uric acid crystals (rhombic, barrel-shaped, yellow-brown)'],
+    answer: 2,
+    explanation: 'Tyrosine crystals (fine colorless/yellow needles in sheaves or rosettes) are abnormal and found in severe liver disease and hereditary tyrosinemia. They represent excess tyrosine in the urine. Calcium oxalate (A) can be normal (especially after ingesting oxalate-rich foods) but may indicate ethylene glycol toxicity in large amounts. Triple phosphate (B) is associated with alkaline urine and UTI (urease-positive organisms). Uric acid crystals (D) are common in acidic urine and gout but are not always pathological.'
+  },
+  {
+    domain: 'urinalysis',
+    stem: 'A dipstick shows 3+ protein, specific gravity 1.015, and pH 7.0. Microscopy shows oval fat bodies, fatty casts, and 0–2 RBCs/hpf. The clinical picture is most consistent with:',
+    options: ['Glomerulonephritis', 'Nephrotic syndrome', 'Acute pyelonephritis', 'Prerenal azotemia'],
+    answer: 1,
+    explanation: 'Nephrotic syndrome is characterized by massive proteinuria (>3.5 g/day in adults), hypoalbuminemia, edema, and hyperlipidemia. Urinalysis shows heavy proteinuria, oval fat bodies (tubular cells with lipid droplets), and fatty casts. RBCs are typically absent or minimal (distinguishing it from nephritic syndrome). Glomerulonephritis (nephritic syndrome, A) shows hematuria, RBC casts, and mild-moderate proteinuria. Pyelonephritis (C) shows WBC casts, bacteria, and hematuria.'
+  },
+  // LAB OPERATIONS
+  {
+    domain: 'lab_ops',
+    stem: 'A QC run violates the Westgard 1₃ₛ rule. What is the appropriate action?',
+    options: ['Report all patient results from this run', 'Reject the run and investigate before reporting any patient results', 'Recalibrate immediately and then report results', 'Ignore it if the other QC material is within 2 SD'],
+    answer: 1,
+    explanation: 'The 1₃ₛ rule (one control exceeding ±3 SD) is a rejection rule in the Westgard scheme, indicating probable random error. The run should be rejected, patient results should not be reported, and the cause must be investigated (reagent problem, instrument malfunction, QC sample integrity). Only after the problem is identified and corrected, and a new acceptable QC run is performed, should patient results be released.'
+  },
+  {
+    domain: 'lab_ops',
+    stem: 'The coefficient of variation (CV) is calculated as:',
+    options: ['Mean / Standard Deviation × 100%', 'Standard Deviation / Mean × 100%', '(SD × Mean) / 100', 'Sum of all values / n'],
+    answer: 1,
+    explanation: 'CV = (SD / Mean) × 100%. The coefficient of variation expresses imprecision as a percentage of the mean, allowing comparison of precision across methods or analytes with different units or concentrations. A lower CV indicates better precision. Typical acceptable CVs in clinical chemistry are <5%; for hormone assays or very low concentrations, higher CVs may be acceptable.'
+  },
+  {
+    domain: 'lab_ops',
+    stem: 'A new laboratory test is evaluated against a gold standard. Results show: 45 true positives, 5 false negatives, 10 false positives, 40 true negatives. What is the sensitivity of the new test?',
+    options: ['45/55 = 81.8%', '45/50 = 90%', '40/50 = 80%', '40/45 = 88.9%'],
+    answer: 1,
+    explanation: 'Sensitivity = TP / (TP + FN) = 45 / (45 + 5) = 45/50 = 90%. Sensitivity is the ability to correctly identify those WITH the disease (true positive rate). Specificity = TN / (TN + FP) = 40 / (40 + 10) = 80%. Positive predictive value (PPV) = TP / (TP + FP) = 45 / 55 = 81.8%. Remember: Sensitivity rules OUT disease (high sensitivity → negative result means not diseased); Specificity rules IN disease.'
+  },
+  {
+    domain: 'lab_ops',
+    stem: 'Under CLIA regulations, which of the following tests is classified as a "waived" test?',
+    options: ['Hemoglobin electrophoresis', 'Urine pregnancy test (dipstick/card)', 'Comprehensive metabolic panel on an automated analyzer', 'Peripheral blood smear review'],
+    answer: 1,
+    explanation: 'CLIA waived tests are simple tests with a low risk of error and minimal technical expertise required. Examples include urine dipstick pregnancy tests, glucose monitoring by glucometer, fecal occult blood tests, and certain rapid strep tests. Moderate complexity tests require QC, proficiency testing, and more training. High complexity tests (hemoglobin electrophoresis, smear review, comprehensive panels) require the most oversight. Waived tests require only a certificate of waiver and minimal personnel requirements.'
+  },
+  {
+    domain: 'lab_ops',
+    stem: 'A critical (panic) value for serum potassium is reported as 6.8 mEq/L. The appropriate first action by the laboratory is to:',
+    options: ['Wait for the physician to call the lab for results', 'Repeat the test and call the critical value to a licensed caregiver immediately and document the read-back', 'Release the result through the LIS without notification', 'Hold the result until the end of the shift for batch reporting'],
+    answer: 1,
+    explanation: 'Critical (panic) values represent life-threatening conditions and must be reported immediately. The standard protocol is: (1) repeat to confirm, (2) call the result to a licensed caregiver who can act on it (physician, NP, nurse), (3) document the call including who received the result, time, date, and read-back. This is a CLIA and Joint Commission requirement. Releasing without notification or delaying reporting (A, C, D) is a serious patient safety violation.'
+  },
+  {
+    domain: 'lab_ops',
+    stem: 'During method validation, you find that your new glucose analyzer consistently reads 8 mg/dL higher than the reference method across all concentrations. This represents:',
+    options: ['Random error (imprecision)', 'Systematic error (bias/inaccuracy)', 'Proportional error', 'Gross error from specimen interference'],
+    answer: 1,
+    explanation: 'A constant difference across all concentrations is systematic error (also called constant bias or inaccuracy). It shifts results consistently in one direction. This is detected by comparing your method to a reference method (comparison study). Random error (A) refers to non-reproducible variation around the mean (imprecision). Proportional error (C) is a type of systematic error where the error increases proportionally with concentration. Corrective actions for systematic error include calibration adjustment or reagent lot change.'
+  },
+  {
+    domain: 'lab_ops',
+    stem: 'A Levey-Jennings chart shows 8 consecutive QC values trending upward, crossing the +2 SD line on the 8th point. Which Westgard warning rule is triggered FIRST?',
+    options: ['1₂ₛ warning rule on the 8th point', '8x trending rule (trend in one direction)', '2₂ₛ rule (two consecutive values >2 SD)', 'R₄ₛ rule (range exceeds 4 SD within a run)'],
+    answer: 0,
+    explanation: 'The 1₂ₛ rule (one QC value exceeding ±2 SD) is a warning rule, not a rejection rule — it prompts extra scrutiny. In this scenario, the 8th consecutive value crosses +2 SD, triggering the 1₂ₛ warning. The 10x rule (ten consecutive values on the same side of the mean) and 8x trending rule are also Westgard multivariate rules but require more points. The 8x trend requires 8 values moving in the same direction — this scenario may also trigger that, but the 1₂ₛ is triggered first on point 8.'
+  },
+  {
+    domain: 'lab_ops',
+    stem: 'Which of the following is an example of a preanalytical error?',
+    options: ['Improperly calibrated spectrophotometer', 'Using a hemolyzed specimen for potassium measurement', 'Entering the wrong reference range in the LIS', 'QC failure due to expired reagent'],
+    answer: 1,
+    explanation: 'Preanalytical errors occur before the actual testing — specimen collection, handling, storage, and transport. A hemolyzed specimen for potassium (from improper collection or prolonged storage) is a classic preanalytical error because hemolysis releases intracellular potassium, falsely elevating the result. Instrument calibration errors (A) and reagent issues (D) are analytical errors. LIS data entry errors (C) are postanalytical errors.'
+  },
+  // MORE BLOOD BANKING
+  {
+    domain: 'blood_banking',
+    stem: 'Fresh frozen plasma (FFP) is thawed and must be transfused within:',
+    options: ['6 hours of thawing if stored at 1–6°C', '24 hours of thawing if stored at 1–6°C', '72 hours of thawing if stored at 1–6°C', '12 hours of thawing at room temperature'],
+    answer: 1,
+    explanation: 'FFP must be transfused within 24 hours of thawing when stored at 1–6°C. If not used within 24 hours, it can be relabeled as "Thawed Plasma" (which is approved for 5 days at 1–6°C, though labile factors V and VIII degrade over time). FFP stored at −18°C or colder has a shelf life of 12 months (within 6 days of collection) or up to 7 years if pathogen-reduced. The 24-hour limit ensures labile factor content remains clinically useful.'
+  },
+  {
+    domain: 'blood_banking',
+    stem: 'A patient with anti-Jka (anti-Kidd) antibody requires transfusion. The antibody screen is currently negative. The safest approach is to:',
+    options: ['Transfuse Jk(a+) blood since the antibody screen is negative', 'Perform an antiglobulin (AHG) crossmatch to screen out incompatible units', 'Provide Jk(a−) units and perform a full crossmatch', 'No special precautions needed since the antibody is undetectable'],
+    answer: 2,
+    explanation: 'Kidd (Jk) antibodies are notorious for evanescence — titers fall below detectable levels between exposures, causing a negative antibody screen, but the patient retains immunologic memory. Re-exposure to Jk(a+) blood triggers a rapid anamnestic response causing a delayed hemolytic transfusion reaction. Therefore, the patient should receive Jk(a−) units AND a full AHG crossmatch should be performed. The safest approach is antigen-negative blood. Never rely on a negative screen alone when a clinically significant antibody has been previously identified.'
+  },
+  // MORE CHEMISTRY
+  {
+    domain: 'chemistry',
+    stem: 'A spectrophotometer is being calibrated. Beer-Lambert law states that absorbance is:',
+    options: ['Inversely proportional to concentration and directly proportional to path length', 'Directly proportional to both concentration and path length', 'Directly proportional to transmittance', 'Independent of path length when concentration is held constant'],
+    answer: 1,
+    explanation: 'Beer-Lambert law: A = εcl, where A = absorbance, ε = molar absorptivity, c = concentration, l = path length. Absorbance is directly proportional to both concentration and path length. This is the basis for quantitative spectrophotometry in clinical chemistry. Transmittance (T) and absorbance (A) are related by A = log(1/T) = −log T. As concentration increases, transmittance decreases and absorbance increases linearly (within the linear range of the assay).'
+  },
+  {
+    domain: 'chemistry',
+    stem: 'A patient has serum sodium 132, serum osmolality 275 mOsm/kg, and normal triglycerides and protein. Urine osmolality is 560 mOsm/kg. The most likely diagnosis is:',
+    options: ['Pseudohyponatremia from hypertriglyceridemia', 'Syndrome of inappropriate antidiuretic hormone secretion (SIADH)', 'Diabetes insipidus', 'Hyperglycemia-induced hyponatremia'],
+    answer: 1,
+    explanation: 'SIADH presents with euvolemic hypoosmolar hyponatremia (low serum sodium and osmolality), with inappropriately concentrated urine (urine osmolality >100 mOsm/kg despite low serum osmolality). ADH causes water retention, diluting serum sodium. Pseudohyponatremia (A) occurs with severely elevated lipids or proteins causing a volumetric error (doesn\'t apply here since triglycerides and protein are normal). Diabetes insipidus (C) causes dilute urine (polyuria) and hypernatremia. Hyperglycemia (D) causes dilutional hyponatremia with elevated measured osmolality.'
+  },
+  // MORE HEMATOLOGY
+  {
+    domain: 'hematology',
+    stem: 'A patient is started on heparin for DVT. The aPTT result 6 hours into therapy is 28 seconds (patient baseline 29 seconds, control 32 seconds). The therapeutic target is 1.5–2.5× the control. This result indicates:',
+    options: ['Therapeutic heparin anticoagulation', 'Subtherapeutic anticoagulation — heparin dose likely needs to be increased', 'Supratherapeutic anticoagulation — heparin dose needs to be decreased', 'Heparin resistance requiring laboratory monitoring by anti-Xa level'],
+    answer: 1,
+    explanation: 'Therapeutic target for heparin monitoring using aPTT is 1.5–2.5× the control (1.5 × 32 = 48 sec; 2.5 × 32 = 80 sec). An aPTT of 28 seconds is virtually identical to baseline — the patient is subtherapeutic and the heparin dose needs to be increased. This is a clinically important finding since subtherapeutic anticoagulation in DVT/PE increases the risk of thrombus extension or pulmonary embolism.'
+  },
+  {
+    domain: 'hematology',
+    stem: 'On a peripheral blood smear, you observe red blood cells with a single pale area that appears as a "target" with a dark central area and an outer ring of hemoglobin. These are target cells (codocytes). Which of the following conditions is most strongly associated with target cells?',
+    options: ['Hereditary spherocytosis', 'Microangiopathic hemolytic anemia', 'Thalassemia or hemoglobin C disease', 'G6PD deficiency'],
+    answer: 2,
+    explanation: 'Target cells (codocytes) are found classically in thalassemia, hemoglobin C disease (HbCC or HbSC), liver disease, iron deficiency, and post-splenectomy. They result from an increased ratio of membrane surface area to RBC volume. Hereditary spherocytosis (A) produces spherocytes (decreased surface-to-volume ratio, opposite change). Microangiopathic hemolytic anemia (B) produces schistocytes. G6PD deficiency (D) produces Heinz bodies and bite cells during hemolytic episodes.'
+  },
+  // MORE MICROBIOLOGY
+  {
+    domain: 'microbiology',
+    stem: 'A 25-year-old patient with HIV (CD4 count 45 cells/µL) presents with headache and fever. CSF India ink prep shows encapsulated yeast cells. The most likely organism is:',
+    options: ['Candida albicans', 'Cryptococcus neoformans', 'Aspergillus fumigatus', 'Histoplasma capsulatum'],
+    answer: 1,
+    explanation: 'Cryptococcus neoformans is an encapsulated yeast that infects immunocompromised patients, especially those with advanced HIV (CD4 <100). India ink stain of CSF shows large encapsulated yeast with a clear "halo" around the yeast cell (the polysaccharide capsule excludes the ink). Cryptococcal antigen (CrAg) latex agglutination is a more sensitive diagnostic test. Candida (A) and Aspergillus (C) do not typically show encapsulation. Histoplasma (D) is an intracellular dimorphic fungus seen inside macrophages.'
+  },
+  {
+    domain: 'microbiology',
+    stem: 'Which of the following organisms is the most common cause of "walking pneumonia" (atypical pneumonia) in young adults and is not visible on Gram stain?',
+    options: ['Streptococcus pneumoniae', 'Mycoplasma pneumoniae', 'Haemophilus influenzae', 'Klebsiella pneumoniae'],
+    answer: 1,
+    explanation: 'Mycoplasma pneumoniae lacks a cell wall (no peptidoglycan), so it cannot be seen on Gram stain and is not susceptible to beta-lactam antibiotics. It causes atypical ("walking") pneumonia, most common in young adults and military recruits. The illness is often milder than typical bacterial pneumonia — patients continue to walk around. Diagnosis is by serology, cold agglutinins (can be positive), or PCR. Treatment with macrolides or tetracyclines is effective. S. pneumoniae (A) is the most common typical bacterial pneumonia.'
+  },
+  // MORE URINALYSIS
+  {
+    domain: 'urinalysis',
+    stem: 'A dipstick test for urine glucose uses the glucose oxidase method. This test is specific for:',
+    options: ['All reducing sugars, including galactose and fructose', 'Glucose only', 'Both glucose and galactose equally', 'Ketones and glucose'],
+    answer: 1,
+    explanation: 'The glucose oxidase reaction on a urine dipstick is specific for glucose only. It uses glucose oxidase → gluconic acid + H₂O₂, then peroxidase catalyzes the reaction with a chromogen to produce color. It does NOT detect other reducing sugars such as galactose, fructose, or lactose. This is clinically important in neonates: galactosemia screening cannot use the dipstick — it requires the Clinitest (copper reduction method), which detects all reducing sugars. Vitamin C (ascorbic acid) causes false-negative results by reducing the chromogen.'
+  },
+  {
+    domain: 'urinalysis',
+    stem: 'In a normal adult, the specific gravity of urine is expected to range between:',
+    options: ['1.000–1.005', '1.003–1.030', '1.030–1.040', '1.010 only (isosthenuria)'],
+    answer: 1,
+    explanation: 'Normal urine specific gravity ranges from 1.003 to 1.030 in adults, reflecting the kidney\'s ability to concentrate and dilute urine. A fixed specific gravity of 1.010 (isosthenuria, C) is always abnormal in adults and indicates loss of tubular concentrating ability (e.g., chronic renal failure). Very dilute urine (SG <1.003) may suggest diabetes insipidus or excessive fluid intake. SG >1.030 indicates high concentration (dehydration, SIADH).'
+  },
+  // MORE LAB OPS
+  {
+    domain: 'lab_ops',
+    stem: 'A laboratory is performing external proficiency testing. Results from the last three surveys show the laboratory\'s performance is outside acceptable limits for serum potassium. Under CLIA, this requires:',
+    options: ['No action required if the error is less than 5%', 'Investigation, corrective action, and documentation; continued unacceptable scores can result in loss of CLIA certification', 'Only notification of the state health department', 'Simply re-running the proficiency samples until acceptable results are obtained'],
+    answer: 1,
+    explanation: 'CLIA requires laboratories to investigate the cause of unsuccessful proficiency testing (PT) results, take corrective action, and document both. Repeated failure (typically 2 out of 3 consecutive events for the same analyte) can result in sanctions including suspension or revocation of CLIA certification and exclusion from Medicare/Medicaid reimbursement. PT must never be discussed with other laboratories or resolved by re-testing — PT samples must be tested in the same manner as patient samples.'
+  },
+  {
+    domain: 'lab_ops',
+    stem: 'Laboratory personnel are centrifuging a specimen when the centrifuge lid accidentally opens at full speed. The correct immediate action is:',
+    options: ['Reach in to stop the rotor by hand', 'Turn off the centrifuge and allow it to coast to a stop with the lid closed', 'Open the lid fully to inspect for damage', 'Call maintenance immediately without any other action'],
+    answer: 1,
+    explanation: 'If the centrifuge lid opens or malfunctions during operation, you should turn off the centrifuge and allow it to decelerate and stop on its own — never reach in to stop it (A) as this causes severe injury. Keep the lid as closed as possible to contain any aerosols if a tube breaks. Only after the rotor has completely stopped should you open the lid to inspect for damage, clean up any spills, and follow biosafety protocols for potential aerosol exposure. Document the incident and report to safety officer.'
+  },
+  // ADDITIONAL HEMATOLOGY
+  {
+    domain: 'hematology',
+    stem: 'Which of the following is the most sensitive early indicator of iron deficiency anemia (before anemia develops)?',
+    options: ['Low serum iron', 'Low serum ferritin', 'Elevated TIBC', 'Microcytic RBCs on smear'],
+    answer: 1,
+    explanation: 'Serum ferritin is the most sensitive early indicator of iron deficiency because ferritin reflects the body\'s total iron stores. It falls first, before serum iron drops, before TIBC rises, and before microcytic changes appear on smear. Normal ferritin effectively rules out iron deficiency anemia. However, ferritin is an acute phase reactant and can be falsely elevated in inflammation, infection, liver disease, and malignancy, masking iron deficiency.'
+  },
+  {
+    domain: 'hematology',
+    stem: 'A patient has WBC 2.1 × 10⁹/L, Hgb 7.8 g/dL, platelet count 45 × 10⁹/L. Bone marrow biopsy shows hypocellularity (<25% cellularity). The most likely diagnosis is:',
+    options: ['Myelodysplastic syndrome (MDS)', 'Aplastic anemia', 'Leukemia with marrow infiltration', 'Megaloblastic anemia'],
+    answer: 1,
+    explanation: 'Aplastic anemia is characterized by pancytopenia (low WBC, Hgb, and platelets) and a hypocellular bone marrow (<25–30% cellularity), with fat replacement. MDS (A) also causes pancytopenia but shows a normo- or hypercellular marrow with dysplastic changes. Leukemia (C) causes pancytopenia from infiltration but would show hypercellular marrow packed with blasts. Megaloblastic anemia (D) causes pancytopenia but shows hypercellular marrow with megaloblastic changes.'
+  },
+  // ADDITIONAL CHEMISTRY
+  {
+    domain: 'chemistry',
+    stem: 'A patient\'s serum protein electrophoresis (SPEP) shows a sharp, narrow "M-spike" (monoclonal band) in the gamma region. This finding is most consistent with:',
+    options: ['Polyclonal hypergammaglobulinemia from chronic infection', 'Monoclonal gammopathy (e.g., multiple myeloma or MGUS)', 'Hypoalbuminemia from liver disease', 'Alpha-1 antitrypsin deficiency'],
+    answer: 1,
+    explanation: 'A monoclonal M-spike (M-protein) is produced by a single clone of plasma cells all secreting identical immunoglobulin molecules. This produces a sharp, narrow band on SPEP. It is seen in multiple myeloma, Waldenström macroglobulinemia, and MGUS (monoclonal gammopathy of undetermined significance). Polyclonal hypergammaglobulinemia (A) from infection/inflammation produces a broad, diffuse band in the gamma region (many different antibodies). Alpha-1 antitrypsin deficiency (D) shows a decreased alpha-1 peak.'
+  },
+  // ADDITIONAL MICROBIOLOGY
+  {
+    domain: 'microbiology',
+    stem: 'A stool culture grows a colorless colony on MacConkey agar. The organism is H₂S-positive on TSI (triple sugar iron agar) with alkaline slant and acid butt. The organism is most likely:',
+    options: ['Escherichia coli', 'Salmonella enterica', 'Shigella sonnei', 'Campylobacter jejuni'],
+    answer: 1,
+    explanation: 'The TSI pattern of an alkaline slant over an acidic (yellow) butt with H₂S production is the classic pattern for Salmonella. Salmonella ferments glucose (acidic butt) but not lactose or sucrose (alkaline slant from peptone utilization) and produces H₂S. It is non-lactose-fermenting (colorless on MacConkey). Shigella (C) is similar but H₂S-NEGATIVE. E. coli (A) is lactose-positive (pink on MacConkey). Campylobacter (D) is a curved, gram-negative rod that does not grow well on routine MacConkey at 35°C — it requires 42°C microaerophilic conditions.'
+  },
+  {
+    domain: 'microbiology',
+    stem: 'Which of the following correctly describes ESBL (Extended-Spectrum Beta-Lactamase) producing organisms?',
+    options: ['They are resistant only to first-generation cephalosporins', 'They are resistant to most penicillins and cephalosporins (including 3rd generation) and are inhibited by clavulanic acid', 'They are resistant to carbapenems (imipenem, meropenem)', 'They are only found in Pseudomonas aeruginosa'],
+    answer: 1,
+    explanation: 'ESBL-producing organisms (commonly Klebsiella pneumoniae and E. coli) produce enzymes that hydrolyze most penicillins and cephalosporins (including 3rd-generation like ceftriaxone and ceftazidime). A key feature is susceptibility to beta-lactamase inhibitors (e.g., clavulanic acid) — confirmed phenotypically by the double-disk synergy test (enhanced zone of inhibition near clavulanate). ESBLs do NOT hydrolyze carbapenems (C) — carbapenem resistance is caused by carbapenemases (KPC, NDM, OXA). Treatment of serious ESBL infections requires carbapenems.'
+  },
+  // ADDITIONAL IMMUNOLOGY
+  {
+    domain: 'immunology',
+    stem: 'Which of the following antinuclear antibody (ANA) patterns is most associated with anti-centromere antibodies and limited systemic sclerosis (CREST syndrome)?',
+    options: ['Homogeneous (diffuse) pattern', 'Speckled pattern', 'Centromere pattern', 'Nucleolar pattern'],
+    answer: 2,
+    explanation: 'The centromere pattern on immunofluorescence ANA testing shows discrete speckles corresponding to chromosome centromeres during mitosis. Anti-centromere antibodies are highly associated with CREST syndrome (Calcinosis, Raynaud\'s, Esophageal dysmotility, Sclerodactyly, Telangiectasia) — the limited form of systemic sclerosis. Homogeneous pattern (A) is associated with anti-dsDNA and anti-histone (drug-induced lupus). Speckled (B) is associated with anti-Sm, anti-SSA/SSB, anti-RNP. Nucleolar (D) is associated with diffuse systemic sclerosis (anti-SCL-70).'
+  },
+  // ADDITIONAL URINALYSIS
+  {
+    domain: 'urinalysis',
+    stem: 'Urine from a patient with phenylketonuria (PKU) will test positive with:',
+    options: ['Glucose oxidase dipstick', 'Ferric chloride (FeCl₃) test', 'Copper reduction test (Clinitest)', 'Nitrite dipstick'],
+    answer: 1,
+    explanation: 'The ferric chloride test (FeCl₃) detects phenylpyruvic acid (a phenylalanine metabolite) in the urine of patients with PKU, producing a characteristic olive-green color. This was historically used for PKU screening before the Guthrie bacterial inhibition assay and mass spectrometry newborn screens replaced it. Glucose oxidase (A) tests for glucose specifically. Clinitest (C) detects all reducing sugars (used for galactosemia screening). Nitrite (D) detects urinary tract infection from nitrate-reducing bacteria.'
+  },
+  // ADDITIONAL LAB OPS
+  {
+    domain: 'lab_ops',
+    stem: 'OSHA\'s Bloodborne Pathogens Standard requires that needles and sharps be disposed of in:',
+    options: ['Regular trash if capped', 'Puncture-resistant sharps containers that are properly labeled with the biohazard symbol', 'Red biohazard bags (same as other infectious waste)', 'Any rigid plastic container with a lid'],
+    answer: 1,
+    explanation: 'OSHA\'s Bloodborne Pathogens Standard (29 CFR 1910.1030) requires that contaminated sharps be placed immediately after use in closable, puncture-resistant, leak-proof sharps containers that are labeled with the biohazard symbol (or color-coded red). Sharps must NEVER be recapped by two-handed technique, bent, or placed in red bags alone. One-hand scoop technique or mechanical devices may be used for recapping if absolutely necessary. Containers must be replaced when three-quarters full and disposed of according to local regulations.'
+  },
+  // ADDITIONAL BLOOD BANKING
+  {
+    domain: 'blood_banking',
+    stem: 'What is the maximum time from start of a red blood cell transfusion to completion per AABB standards?',
+    options: ['2 hours', '4 hours', '6 hours', '8 hours'],
+    answer: 1,
+    explanation: 'A unit of red blood cells must be transfused within 4 hours of being issued from the blood bank (from the time the unit leaves temperature-controlled storage). After 4 hours, the unit is at risk for bacterial proliferation and must be discarded. This is especially important in warm environments. If a patient cannot receive the unit within 4 hours, it can be stored in a monitored blood bank refrigerator and reissued — but once out of controlled storage, the 4-hour clock starts.'
+  },
+  // ADDITIONAL CHEMISTRY
+  {
+    domain: 'chemistry',
+    stem: 'A patient has serum iron 210 µg/dL, TIBC 260 µg/dL, and ferritin 1,200 ng/mL. These findings are most consistent with:',
+    options: ['Iron deficiency anemia', 'Iron overload (hemochromatosis or hemosiderosis)', 'Anemia of chronic disease', 'B12 deficiency'],
+    answer: 1,
+    explanation: 'Iron overload (hemochromatosis or transfusion hemosiderosis) is characterized by very high serum iron, high ferritin, and low-to-normal TIBC (which falls as all transferrin binding sites are occupied). Transferrin saturation = serum iron/TIBC × 100 = 210/260 × 100 ≈ 81% (normal 20–50%). Saturation >45% is suspicious for hemochromatosis. Iron deficiency (A) shows low iron, low ferritin, and high TIBC. Anemia of chronic disease (C) shows low iron and low TIBC with normal-to-high ferritin.'
+  },
+  // ADDITIONAL HEMATOLOGY
+  {
+    domain: 'hematology',
+    stem: 'Flow cytometry immunophenotyping of an acute leukemia shows CD3+, CD5+, CD7+, TdT+, and HLA-DR−. This phenotype is most consistent with:',
+    options: ['Acute myeloid leukemia (AML)', 'Acute T-cell lymphoblastic leukemia (T-ALL)', 'Acute B-cell lymphoblastic leukemia (B-ALL)', 'Chronic lymphocytic leukemia (CLL)'],
+    answer: 1,
+    explanation: 'T-cell markers (CD3, CD5, CD7) combined with TdT positivity (terminal deoxynucleotidyl transferase — a marker of lymphoblastic immaturity) and HLA-DR negativity are characteristic of T-cell ALL. B-ALL (C) is TdT+ but expresses B-cell markers (CD19, CD10/CALLA, CD20) and HLA-DR+. AML (A) is typically TdT-negative (except AML-M0) and expresses myeloid markers (CD13, CD33, CD117, MPO). CLL (D) expresses mature lymphocyte markers without TdT.'
+  },
+  // ADDITIONAL MICROBIOLOGY
+  {
+    domain: 'microbiology',
+    stem: 'A blood culture set turns positive after 4 days incubation. Gram stain shows gram-positive rods. Colonies on blood agar are grey-white with a narrow zone of beta-hemolysis and display "tumbling motility" in wet prep. This organism is:',
+    options: ['Corynebacterium species (diphtheroids)', 'Listeria monocytogenes', 'Bacillus anthracis', 'Clostridium perfringens'],
+    answer: 1,
+    explanation: 'Listeria monocytogenes is a gram-positive rod that produces a narrow beta-hemolysis zone on blood agar and characteristically shows end-over-end "tumbling motility" at 25°C (positive umbrella motility at room temp but not at 37°C). It is catalase-positive and esculin-positive. It grows at refrigerator temperatures (cold enrichment) and can contaminate ready-to-eat foods. Corynebacteria (A) are typically non-hemolytic and non-motile. B. anthracis (C) does not produce hemolysis and is non-motile. C. perfringens (D) is an anaerobe with double-zone hemolysis.'
+  }
+];
+
+const DOMAIN_WEIGHTS_INT = {
+  blood_banking: 175, chemistry: 225, hematology: 225,
+  microbiology: 175, immunology: 75, urinalysis: 75, lab_ops: 75
+};
+
+let selectedMode = 'quick';
+let selectedDomain = 'all';
+let sessionQuestions = [];
+let currentIdx = 0;
+let answered = false;
+let correct = 0;
+let domainStats = {};
+let timerInterval = null;
+let timeRemaining = 0;
+
+function selectMode(el) {
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedMode = el.dataset.mode;
+  const domainSec = document.getElementById('domain-section');
+  domainSec.style.opacity = (selectedMode === 'full' || selectedMode === 'mini') ? '0.4' : '1';
+  domainSec.style.pointerEvents = (selectedMode === 'full' || selectedMode === 'mini') ? 'none' : '';
+}
+
+function selectDomain(el) {
+  document.querySelectorAll('.domain-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedDomain = el.dataset.domain;
+}
+
+function buildSession() {
+  const pool = [...QUESTIONS];
+  shuffle(pool);
+  let count, weighted;
+
+  if (selectedMode === 'quick') {
+    count = 10;
+    const src = selectedDomain === 'all' ? pool : pool.filter(q => q.domain === selectedDomain);
+    return src.slice(0, Math.min(count, src.length));
+  } else if (selectedMode === 'drill') {
+    count = 20;
+    const src = selectedDomain === 'all' ? pool : pool.filter(q => q.domain === selectedDomain);
+    return src.slice(0, Math.min(count, src.length));
+  } else if (selectedMode === 'mini') {
+    count = 30;
+    return weightedSample(pool, count);
+  } else {
+    count = 100;
+    return weightedSample(pool, count);
+  }
+}
+
+function weightedSample(pool, total) {
+  const totalWeight = Object.values(DOMAIN_WEIGHTS_INT).reduce((a,b) => a+b, 0);
+  const result = [];
+  Object.entries(DOMAIN_WEIGHTS_INT).forEach(([domain, weight]) => {
+    const n = Math.round((weight / totalWeight) * total);
+    const src = pool.filter(q => q.domain === domain);
+    shuffle(src);
+    result.push(...src.slice(0, Math.min(n, src.length)));
+  });
+  shuffle(result);
+  return result.slice(0, total);
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+// Returns a clone of the question with its options shuffled into a random
+// order, the answer index updated, and every option-letter reference inside
+// the explanation remapped to its new position. Keeps the correct-answer
+// position evenly distributed across A–E across the question bank.
+function prepareQuestion(q) {
+  const order = q.options.map((_, i) => i);
+  shuffle(order);
+  // letterMap: original display letter -> new display letter
+  const letterMap = {};
+  order.forEach((origIdx, newIdx) => {
+    letterMap['ABCDE'[origIdx]] = 'ABCDE'[newIdx];
+  });
+  const remapLetters = (s) => s.replace(/[A-E]/g, ch => letterMap[ch] || ch);
+  // Remap only scoped references: (A), (A, C, D), (B and D), and "Option(s) X ...".
+  let explanation = q.explanation
+    .replace(/\(([A-E](?:(?:,| and| or)? +[A-E])*)\)/g, (m, inner) => '(' + remapLetters(inner) + ')')
+    .replace(/\b([Oo]ptions?)(\s+)([A-E](?:(?:,| and| or)\s+[A-E])*)/g,
+      (m, opt, sp, inner) => opt + sp + remapLetters(inner));
+  return {
+    domain: q.domain,
+    stem: q.stem,
+    options: order.map(i => q.options[i]),
+    answer: order.indexOf(q.answer),
+    explanation
+  };
+}
+
+function startQuiz() {
+  sessionQuestions = buildSession().map(prepareQuestion);
+  currentIdx = 0;
+  correct = 0;
+  domainStats = {};
+  Object.keys(DOMAIN_NAMES).forEach(d => { domainStats[d] = { correct: 0, total: 0 }; });
+
+  document.getElementById('setup-screen').classList.add('hidden');
+  document.getElementById('quiz-screen').classList.remove('hidden');
+
+  if (selectedMode === 'full') {
+    timeRemaining = 150 * 60;
+    document.getElementById('quiz-timer').classList.remove('hidden');
+    timerInterval = setInterval(tickTimer, 1000);
+  }
+
+  renderQuestion();
+}
+
+function tickTimer() {
+  timeRemaining--;
+  const m = Math.floor(timeRemaining / 60);
+  const s = timeRemaining % 60;
+  document.getElementById('quiz-timer').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+  if (timeRemaining <= 0) {
+    clearInterval(timerInterval);
+    showSummary();
+  }
+}
+
+function renderQuestion() {
+  if (currentIdx >= sessionQuestions.length) {
+    showSummary();
+    return;
+  }
+  answered = false;
+  const q = sessionQuestions[currentIdx];
+  const total = sessionQuestions.length;
+  const pct = (currentIdx / total * 100).toFixed(0);
+
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('quiz-progress-label').textContent = `Question ${currentIdx + 1} of ${total} — ${DOMAIN_NAMES[q.domain]}`;
+  document.getElementById('quiz-domain-badge').textContent = DOMAIN_NAMES[q.domain];
+  document.getElementById('quiz-domain-badge').className = `badge badge-${DOMAIN_COLORS[q.domain]}`;
+  document.getElementById('quiz-correct').textContent = correct;
+  document.getElementById('quiz-answered').textContent = currentIdx;
+  document.getElementById('question-stem').textContent = q.stem;
+
+  const optList = document.getElementById('options-list');
+  optList.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="option-letter">${'ABCDE'[i]}.</span>${opt}`;
+    btn.onclick = () => selectAnswer(i);
+    optList.appendChild(btn);
+  });
+
+  document.getElementById('feedback-box').classList.add('hidden');
+  document.getElementById('feedback-box').innerHTML = '';
+  document.getElementById('next-btn').classList.add('hidden');
+}
+
+function selectAnswer(chosen) {
+  if (answered) return;
+  answered = true;
+  const q = sessionQuestions[currentIdx];
+  const isCorrect = chosen === q.answer;
+
+  if (isCorrect) correct++;
+  if (!domainStats[q.domain]) domainStats[q.domain] = { correct: 0, total: 0 };
+  domainStats[q.domain].total++;
+  if (isCorrect) domainStats[q.domain].correct++;
+
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.answer) btn.classList.add('reveal-correct');
+    if (i === chosen && !isCorrect) btn.classList.add('wrong');
+    if (i === chosen && isCorrect) { btn.classList.remove('reveal-correct'); btn.classList.add('correct'); }
+  });
+
+  const fb = document.getElementById('feedback-box');
+  fb.className = `feedback ${isCorrect ? 'correct-fb' : 'wrong-fb'}`;
+  fb.innerHTML = `<div class="feedback-header">${isCorrect ? '✓ Correct!' : `✗ Incorrect — correct answer: ${'ABCDE'[q.answer]}. ${q.options[q.answer]}`}</div><div>${q.explanation}</div>`;
+  fb.classList.remove('hidden');
+  document.getElementById('next-btn').classList.remove('hidden');
+  document.getElementById('quiz-correct').textContent = correct;
+  document.getElementById('quiz-answered').textContent = currentIdx + 1;
+}
+
+function nextQuestion() {
+  currentIdx++;
+  renderQuestion();
+}
+
+function showSummary() {
+  if (timerInterval) clearInterval(timerInterval);
+  document.getElementById('quiz-screen').classList.add('hidden');
+  document.getElementById('summary-screen').classList.remove('hidden');
+
+  const total = sessionQuestions.length;
+  const pct = total > 0 ? Math.round(correct / total * 100) : 0;
+
+  document.getElementById('summary-score-num').textContent = `${correct}/${total}`;
+  document.getElementById('summary-score-label').textContent = `${pct}% correct`;
+
+  let verdict = '';
+  if (selectedMode === 'full' || selectedMode === 'mini') {
+    if (pct >= 70) verdict = '<span class="verdict pass">On track to pass ✓</span>';
+    else verdict = '<span class="verdict fail">Below passing threshold — keep studying</span>';
+    verdict += '<p style="font-size:12px;color:var(--text-faint);margin-top:8px;">≥70% on practice questions is a rough indicator. This is not an official scaled score.</p>';
+  } else {
+    if (pct >= 80) verdict = '<span class="verdict pass">Strong performance</span>';
+    else if (pct >= 60) verdict = '<span class="verdict neutral">Room for improvement</span>';
+    else verdict = '<span class="verdict fail">Focus review on missed topics</span>';
+  }
+  document.getElementById('summary-verdict').innerHTML = verdict;
+
+  const breakdown = document.getElementById('domain-breakdown');
+  breakdown.innerHTML = '';
+  let weakDomain = null, weakPct = 101;
+
+  Object.entries(domainStats).forEach(([domain, stats]) => {
+    if (stats.total === 0) return;
+    const p = Math.round(stats.correct / stats.total * 100);
+    if (p < weakPct) { weakPct = p; weakDomain = domain; }
+    const color = p >= 70 ? '#3b6d11' : p >= 50 ? '#854f0b' : '#a32d2d';
+    const barColor = p >= 70 ? '#639922' : p >= 50 ? '#ba7517' : '#e24b4a';
+    breakdown.innerHTML += `
+      <div class="domain-row">
+        <div class="domain-row-name">${DOMAIN_NAMES[domain]}</div>
+        <div class="domain-row-bar-wrap"><div class="domain-row-bar" style="width:${p}%;background:${barColor}"></div></div>
+        <div class="domain-row-pct" style="color:${color}">${p}%</div>
+      </div>`;
+  });
+
+  if (weakDomain && weakPct < 80) {
+    const wc = document.getElementById('weak-card');
+    wc.style.display = 'block';
+    document.getElementById('weak-suggestion').textContent =
+      `Your weakest domain was ${DOMAIN_NAMES[weakDomain]} (${weakPct}%). Start a Domain Drill on ${DOMAIN_NAMES[weakDomain]} next to shore up that area before your next full mock.`;
+  }
+}
+
+function goHome() {
+  document.getElementById('summary-screen').classList.add('hidden');
+  document.getElementById('setup-screen').classList.remove('hidden');
+  const domainSec = document.getElementById('domain-section');
+  domainSec.style.opacity = '';
+  domainSec.style.pointerEvents = '';
+  document.getElementById('quiz-timer').classList.add('hidden');
+}
+</script>
+</body>
+</html>
